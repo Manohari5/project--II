@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}NestIn - Find Your Next Room{%
+{% extends "base.html" %} {% block title %}Rentora - Find Your Next Room{%
 endblock %} {% block content %}
 
 <section class="hero">
@@ -6,8 +6,7 @@ endblock %} {% block content %}
     <p class="hero-eyebrow">Room Rental, Simplified</p>
     <h1>A room that feels like yours, found in minutes.</h1>
     <p class="lead">
-      Browse verified listings from real room owners near you. No login required
-      to look around - book the moment you find the one.
+      Browse verified listings from real room owners near you. Look around - book the room .
     </p>
 
     <div class="search-tag">
@@ -77,7 +76,7 @@ endblock %} {% block content %}
       {% endif %}
       <div class="room-body">
         <h3>{{ room.title }}</h3>
-        <p class="room-location">📍 {{ room.location }}</p>
+        <p class="room-location"> {{ room.location }}</p>
         <div class="view-btn">
           <a
             href="{{ url_for('public.room_detail', room_id=room.id) }}"
@@ -103,7 +102,7 @@ endblock %} {% block content %}
 <section class="page-section bg-ink" id="about">
   <div class="about-grid">
     <div>
-      <p class="eyebrow" style="color: #b9873f">About NestIn</p>
+      <p class="eyebrow" style="color: #b9873f">About Rentora</p>
       <h2>Built for room seekers and room owners alike</h2>
       <p style="color: #c9c2af">
         Room owners list their available rooms with photos and details. Every
@@ -135,7 +134,7 @@ endblock %} {% block content %}
       <h2>Own a room to rent out?</h2>
       <p>
         Register as a Room Owner and list your space in minutes. Once approved
-        by our admin team, it'll be visible to everyone browsing NestIn.
+        by our admin team, it'll be visible to everyone browsing Rentora.
       </p>
       <a href="{{ url_for('auth.register') }}" class="btn btn-brass"
         >List Your Room</a
