@@ -1,0 +1,43 @@
+{% extends "admin/_layout.html" %}
+{% set active_page = "owners" %}
+{% block title %}Registered Owners - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>Registered Room Owners</h2></div>
+
+<div class="panel">
+    {% if owners %}
+    <table>
+        <thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Phone</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for owner in owners %}
+            <tr>
+                <td>{{ owner.full_name }}</td>
+                <td>{{ owner.username }}</td>
+                <td>{{ owner.email }}</td>
+                <td>{{ owner.phone }}</td>
+                <td><span class="badge-status badge-{{ owner.status }}">{{ owner.status }}</span></td>
+                <td class="table-actions">
+                    {% if owner.status != "approved" %}
+                    <form method="post" action="{{ url_for('admin.approve_owner', user_id=owner.id) }}">
+                        <button type="submit" class="btn btn-sm btn-teal">Approve</button>
+                    </form>
+                    {% endif %}
+                    {% if owner.status != "rejected" %}
+                    <form method="post" action="{{ url_for('admin.reject_owner', user_id=owner.id) }}">
+                        <button type="submit" class="btn btn-sm btn-outline">Reject</button>
+                    </form>
+                    {% endif %}
+                    <form method="post" action="{{ url_for('admin.delete_owner', user_id=owner.id) }}" onsubmit="return confirm('Delete this owner and all their rooms?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No room owners have registered yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

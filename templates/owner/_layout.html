@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dash-wrap">
+    <aside class="dash-sidebar">
+        <div class="dash-profile">
+            <img src="{{ url_for('public.profile_pic', filename=current_user.profile_pic) }}" class="avatar-circle" alt="{{ current_user.full_name }}">
+            <strong>{{ current_user.full_name }}</strong>
+            <span>Room Owner</span>
+        </div>
+        <nav class="dash-nav">
+            <a href="{{ url_for('owner.dashboard') }}" class="{{ 'active' if active_page == 'dashboard' }}">Dashboard</a>
+            <a href="{{ url_for('owner.rooms') }}" class="{{ 'active' if active_page == 'rooms' }}">My Rooms</a>
+            <a href="{{ url_for('owner.add_room') }}" class="{{ 'active' if active_page == 'add_room' }}">Add Room</a>
+            <a href="{{ url_for('owner.bookings') }}" class="{{ 'active' if active_page == 'bookings' }}">Bookings</a>
+            <a href="{{ url_for('owner.notifications') }}" class="{{ 'active' if active_page == 'notifications' }}">
+                Notifications {% if unread_notifications %}<span class="badge">{{ unread_notifications }}</span>{% endif %}
+            </a>
+            <a href="{{ url_for('owner.profile') }}" class="{{ 'active' if active_page == 'profile' }}">Profile</a>
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        </nav>
+    </aside>
+
+    <div class="dash-content">
+        {% block dash_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

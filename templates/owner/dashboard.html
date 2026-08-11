@@ -1,0 +1,60 @@
+{% extends "owner/_layout.html" %}
+{% set active_page = "dashboard" %}
+{% block title %}My Dashboard - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header">
+    <h2>Welcome, {{ current_user.full_name.split(' ')[0] }}</h2>
+    <a href="{{ url_for('owner.add_room') }}" class="btn btn-brass">+ Add Room</a>
+</div>
+
+<div class="stat-cards">
+    <div class="stat-card"><strong>{{ total_rooms }}</strong><span>Total Rooms</span></div>
+    <div class="stat-card"><strong>{{ approved }}</strong><span>Approved</span></div>
+    <div class="stat-card"><strong>{{ pending }}</strong><span>Pending Review</span></div>
+    <div class="stat-card"><strong>{{ pending_bookings|length }}</strong><span>Pending Bookings</span></div>
+    <div class="stat-card"><strong>{{ accepted_bookings|length }}</strong><span>Accepted Bookings</span></div>
+</div>
+
+<div class="panel">
+    <h3>Recent Room Listings</h3>
+    {% if my_rooms %}
+    <table>
+        <thead><tr><th>Title</th><th>Location</th><th>Price</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for room in my_rooms[:5] %}
+            <tr>
+                <td>{{ room.title }}</td>
+                <td>{{ room.location }}</td>
+                <td>Rs {{ "%.0f"|format(room.price) }}</td>
+                <td><span class="badge-status badge-{{ room.status }}">{{ room.status }}</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>You haven't listed any rooms yet. <a href="{{ url_for('owner.add_room') }}">Add your first room</a>.</p>
+    {% endif %}
+</div>
+
+<div class="panel">
+    <h3>Pending Booking Requests</h3>
+    {% if pending_bookings %}
+    <table>
+        <thead><tr><th>Booker</th><th>Phone</th><th>Room</th><th></th></tr></thead>
+        <tbody>
+        {% for booking in pending_bookings[:5] %}
+            <tr>
+                <td>{{ booking.full_name }}</td>
+                <td>{{ booking.phone }}</td>
+                <td>{{ booking.room.title }}</td>
+                <td><a href="{{ url_for('owner.bookings') }}" class="btn btn-sm btn-outline">Review</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No pending booking requests right now.</p>
+    {% endif %}
+</div>
+{% endblock %}

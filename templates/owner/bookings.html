@@ -1,0 +1,61 @@
+{% extends "owner/_layout.html" %}
+{% set active_page = "bookings" %}
+{% block title %}Bookings - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>Bookings</h2></div>
+
+<div class="panel">
+    <h3>Pending Requests</h3>
+    {% if pending_bookings %}
+    <table>
+        <thead><tr><th>Room</th><th>Name</th><th>Phone</th><th>Email</th><th>Gender</th><th>Caste</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for booking in pending_bookings %}
+            <tr>
+                <td>{{ booking.room.title }}</td>
+                <td>{{ booking.full_name }}</td>
+                <td>{{ booking.phone }}</td>
+                <td>{{ booking.email }}</td>
+                <td>{{ booking.gender or "-" }}</td>
+                <td>{{ booking.caste or "-" }}</td>
+                <td class="table-actions">
+                    <form method="post" action="{{ url_for('owner.accept_booking', booking_id=booking.id) }}">
+                        <button type="submit" class="btn btn-sm btn-teal">Accept</button>
+                    </form>
+                    <form method="post" action="{{ url_for('owner.delete_booking', booking_id=booking.id) }}" onsubmit="return confirm('Delete this booking request?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No pending booking requests.</p>
+    {% endif %}
+</div>
+
+<div class="panel">
+    <h3>Accepted Bookings</h3>
+    {% if accepted_bookings %}
+    <table>
+        <thead><tr><th>Room</th><th>Name</th><th>Phone</th><th>Email</th><th>Gender</th><th>Caste</th></tr></thead>
+        <tbody>
+        {% for booking in accepted_bookings %}
+            <tr>
+                <td>{{ booking.room.title }}</td>
+                <td>{{ booking.full_name }}</td>
+                <td>{{ booking.phone }}</td>
+                <td>{{ booking.email }}</td>
+                <td>{{ booking.gender or "-" }}</td>
+                <td>{{ booking.caste or "-" }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No accepted bookings yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "admin/_layout.html" %}
+{% set active_page = "visitors" %}
+{% block title %}Visitor Statistics - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>Visitor Statistics</h2></div>
+
+<div class="stat-cards">
+    <div class="stat-card"><strong>{{ data|sum }}</strong><span>Total Visits</span></div>
+    <div class="stat-card"><strong>{{ total_users }}</strong><span>Registered Owners</span></div>
+    <div class="stat-card"><strong>{{ total_rooms }}</strong><span>Total Rooms</span></div>
+</div>
+
+<div class="panel chart-card">
+    <h3>Daily Website Visits</h3>
+    <canvas id="visitorAllChart"></canvas>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+
+<canvas
+    id="visitorChart"
+    data-labels='{{ chart_labels|tojson }}'
+    data-data='{{ chart_data|tojson }}'>
+</canvas>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const canvas = document.getElementById("visitorChart");
+    if (!canvas) return;
+
+    const chartLabels = JSON.parse(canvas.dataset.labels);
+    const chartData = JSON.parse(canvas.dataset.data);
+
+    new Chart(canvas, {
+        type: "line",
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: "Daily Visits",
+                data: chartData,
+                borderColor: "#B9873F",
+                backgroundColor: "rgba(185,135,63,0.15)",
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+});
+</script>
+{% endblock %}

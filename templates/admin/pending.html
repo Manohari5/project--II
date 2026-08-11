@@ -1,0 +1,65 @@
+{% extends "admin/_layout.html" %}
+{% set active_page = "pending" %}
+{% block title %}Pending Requests - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>Pending Requests</h2></div>
+
+<div class="panel">
+    <h3>Pending Room Owner Accounts</h3>
+    {% if pending_owners %}
+    <table>
+        <thead><tr><th>Name</th><th>Username</th><th>Email</th><th>Phone</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for owner in pending_owners %}
+            <tr>
+                <td>{{ owner.full_name }}</td>
+                <td>{{ owner.username }}</td>
+                <td>{{ owner.email }}</td>
+                <td>{{ owner.phone }}</td>
+                <td class="table-actions">
+                    <form method="post" action="{{ url_for('admin.approve_owner', user_id=owner.id) }}">
+                        <button type="submit" class="btn btn-sm btn-teal">Approve</button>
+                    </form>
+                    <form method="post" action="{{ url_for('admin.reject_owner', user_id=owner.id) }}">
+                        <button type="submit" class="btn btn-sm btn-outline">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No pending owner accounts.</p>
+    {% endif %}
+</div>
+
+<div class="panel">
+    <h3>Pending Room Listings</h3>
+    {% if pending_rooms %}
+    <table>
+        <thead><tr><th>Title</th><th>Owner</th><th>Location</th><th>Price</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for room in pending_rooms %}
+            <tr>
+                <td>{{ room.title }}</td>
+                <td>{{ room.owner.full_name }}</td>
+                <td>{{ room.location }}</td>
+                <td>Rs {{ "%.0f"|format(room.price) }}</td>
+                <td class="table-actions">
+                    <form method="post" action="{{ url_for('admin.approve_room', room_id=room.id) }}">
+                        <button type="submit" class="btn btn-sm btn-teal">Approve</button>
+                    </form>
+                    <form method="post" action="{{ url_for('admin.reject_room', room_id=room.id) }}">
+                        <button type="submit" class="btn btn-sm btn-outline">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No pending room listings.</p>
+    {% endif %}
+</div>
+{% endblock %}

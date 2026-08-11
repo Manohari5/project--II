@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 260" width="100%" height="100%">
+  <rect width="400" height="260" fill="#EFE6D2"/>
+  <g fill="none" stroke="#B9873F" stroke-width="3">
+    <path d="M60 160 L200 70 L340 160" />
+    <rect x="90" y="160" width="220" height="90" fill="#F3EBDA" stroke="#B9873F"/>
+    <rect x="180" y="190" width="40" height="60" fill="#1B2A3A" stroke="none"/>
+    <rect x="110" y="180" width="35" height="35" fill="#FAF6EC" stroke="#B9873F"/>
+    <rect x="255" y="180" width="35" height="35" fill="#FAF6EC" stroke="#B9873F"/>
+  </g>
+  <text x="200" y="30" text-anchor="middle" fill="#8A7A5C" font-family="sans-serif" font-size="14">No photo uploaded yet</text>
+</svg>

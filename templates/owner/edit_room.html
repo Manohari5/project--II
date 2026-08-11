@@ -1,0 +1,55 @@
+{% extends "owner/_layout.html" %}
+{% set active_page = "rooms" %}
+{% block title %}Edit Room - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>Edit Room</h2></div>
+
+<div class="panel" style="max-width:640px;">
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Room Title</label>
+            <input type="text" id="title" name="title" value="{{ room.title }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required>{{ room.description }}</textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="price">Monthly Price (Rs)</label>
+                <input type="number" id="price" name="price" step="0.01" value="{{ room.price }}" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" value="{{ room.location }}" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label><input type="checkbox" name="is_available" {{ "checked" if room.is_available }} style="width:auto; display:inline-block; margin-right:8px;">Room is currently available</label>
+        </div>
+        <div class="form-group">
+            <label for="roomImagesInput">Add More Photos</label>
+            <input type="file" id="roomImagesInput" name="images" accept="image/*" multiple>
+            <div id="roomImagesPreview" style="margin-top:10px;"></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Save Changes</button>
+    </form>
+</div>
+
+{% if room.images %}
+<div class="panel">
+    <h3>Current Photos</h3>
+    <div style="display:flex; flex-wrap:wrap; gap:12px;">
+        {% for img in room.images %}
+        <div style="text-align:center;">
+            <img src="{{ url_for('public.room_image', filename=img.filename) }}" style="width:110px; height:80px; object-fit:cover; border-radius:6px;">
+            <form method="post" action="{{ url_for('owner.delete_room_image', image_id=img.id) }}" onsubmit="return confirm('Remove this photo?');">
+                <button type="submit" class="btn btn-sm btn-danger" style="margin-top:6px;">Remove</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+{% endblock %}

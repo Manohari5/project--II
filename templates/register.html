@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Register as Room Owner - NestIn{% endblock %}
+
+{% block content %}
+<div class="form-wrap wide">
+    <h2>List your room on NestIn</h2>
+    <p class="form-subtitle">Create your Room Owner account. Your rooms will go live after a quick admin review.</p>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group" style="text-align:center;">
+            <div class="profile-pic-wrap">
+                <img id="picPreview" src="{{ url_for('static', filename='images/placeholder_about.svg') }}" class="profile-pic-large" alt="Profile picture preview">
+                <label class="pic-upload-btn" for="profile_pic_input">+</label>
+                <input type="file" id="profile_pic_input" name="profile_pic" accept="image/*" style="display:none;">
+            </div>
+            <label style="font-weight:400; color:#6B7280;">Profile picture (optional)</label>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email (Gmail only)</label>
+                <input type="email" id="email" name="email" placeholder="you@gmail.com" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="text" id="phone" name="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="house_number">House Number</label>
+            <input type="text" id="house_number" name="house_number">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group"></div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required minlength="6">
+            </div>
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required minlength="6">
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+    </form>
+
+    <p class="form-footer-link">Already have an account? <a href="{{ url_for('auth.login') }}">Log in</a></p>
+</div>
+{% endblock %}

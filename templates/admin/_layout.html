@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dash-wrap">
+    <aside class="dash-sidebar">
+        <div class="dash-profile">
+            <img src="{{ url_for('static', filename='images/placeholder_about.svg') }}" class="avatar-circle" alt="Admin">
+            <strong>{{ current_user.full_name }}</strong>
+            <span>Administrator</span>
+        </div>
+        <nav class="dash-nav">
+            <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if active_page == 'dashboard' }}">Dashboard</a>
+            <a href="{{ url_for('admin.owners') }}" class="{{ 'active' if active_page == 'owners' }}">Registered Owners</a>
+            <a href="{{ url_for('admin.users') }}" class="{{ 'active' if active_page == 'users' }}">Registered Users</a>
+            <a href="{{ url_for('admin.rooms') }}" class="{{ 'active' if active_page == 'rooms' }}">Room Lists</a>
+            <a href="{{ url_for('admin.pending') }}" class="{{ 'active' if active_page == 'pending' }}">Pending Requests</a>
+            <a href="{{ url_for('admin.notifications') }}" class="{{ 'active' if active_page == 'notifications' }}">
+                Notifications {% if unread_notifications %}<span class="badge">{{ unread_notifications }}</span>{% endif %}
+            </a>
+            <a href="{{ url_for('admin.visitors') }}" class="{{ 'active' if active_page == 'visitors' }}">Visitor Statistics</a>
+            <a href="{{ url_for('admin.profile') }}" class="{{ 'active' if active_page == 'profile' }}">Profile</a>
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
+        </nav>
+    </aside>
+
+    <div class="dash-content">
+        {% block dash_content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

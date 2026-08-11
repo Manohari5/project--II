@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block title %}{{ room.title }} - NestIn{% endblock
+%} {% block content %}
+<div class="room-detail-grid">
+  <article class="detail-gallery">
+    {% if room.images %}
+    <img
+      src="{{ url_for('public.room_image', filename=room.images[0].filename) }}"
+      alt="{{ room.title }}"
+    />
+    {% if room.images|length > 1 %}
+    <div class="detail-thumbs">
+      {% for img in room.images[1:5] %}
+      <img
+        src="{{ url_for('public.room_image', filename=img.filename) }}"
+        alt="{{ room.title }} photo"
+      />
+      {% endfor %}
+    </div>
+    {% endif %} {% else %}
+    <img
+      src="{{ url_for('static', filename='images/placeholder_room.svg') }}"
+      alt="No photo available"
+    />
+    {% endif %}
+
+    <h1 style="margin-top: 24px">{{ room.title }}</h1>
+    <p class="room-location">📍 {{ room.location }}</p>
+
+    <section>
+      <h3>About this room</h3>
+      <p>{{ room.description }}</p>
+    </section>
+
+    <section>
+      <h3>Listed by</h3>
+      <p>{{ room.owner.full_name }} &middot; {{ room.owner.phone }}</p>
+    </section>
+  </article>
+
+  <aside class="booking-box">
+    <p class="price">
+      Rs {{ "%.0f"|format(room.price) }}
+      <span
+        style="
+          font-size: 0.9rem;
+          color: #6b7280;
+          font-family: &quot;Inter&quot;;
+        "
+        >/ month</span
+      >
+    </p>
+    <p class="{{ 'available' if room.is_available else 'unavailable' }}">
+      {{ "Available now" if room.is_available else "Currently unavailable" }}
+    </p>
+
+    {% if room.is_available %}
+    <form
+      method="post"
+      action="{{ url_for('public.book_room', room_id=room.id) }}"
+      style="margin-top: 18px"
+    >
+      <h3>Book Now</h3>
+      <div class="form-group">
+        <label for="full_name">Full Name</label>
+        <input type="text" id="full_name" name="full_name" required />
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required />
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select id="gender" name="gender">
+          <option value="">Prefer not to say</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="caste">Caste</label>
+        <input type="text" id="caste" name="caste" />
+      </div>
+      <button type="submit" class="btn btn-brass btn-block">
+        Send Booking Request
+      </button>
+    </form>
+    {% endif %}
+  </aside>
+</div>
+{% endblock %}

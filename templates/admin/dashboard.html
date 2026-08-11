@@ -1,0 +1,84 @@
+{% extends "admin/_layout.html" %}
+{% set active_page = "dashboard" %}
+{% block title %}Admin Dashboard - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>Admin Dashboard</h2></div>
+
+<div class="stat-cards">
+    <div class="stat-card"><strong>{{ stats.total_users }}</strong><span>Total Users</span></div>
+    <div class="stat-card"><strong>{{ stats.total_owners }}</strong><span>Room Owners</span></div>
+    <div class="stat-card"><strong>{{ stats.total_rooms }}</strong><span>Total Rooms</span></div>
+    <div class="stat-card"><strong>{{ stats.pending_requests }}</strong><span>Pending Requests</span></div>
+    <div class="stat-card"><strong>{{ stats.approved_rooms }}</strong><span>Approved Rooms</span></div>
+    <div class="stat-card"><strong>{{ stats.rejected_rooms }}</strong><span>Rejected Rooms</span></div>
+    <div class="stat-card"><strong>{{ stats.total_visitors }}</strong><span>Website Visitors</span></div>
+</div>
+
+<div class="panel chart-card">
+    <h3>Visitor Trend (Last 14 Days)</h3>
+    <canvas id="visitorChart"></canvas>
+</div>
+
+<div class="panel">
+    <h3>Recent Notifications</h3>
+    {% if recent_notifications %}
+    <table>
+        <thead><tr><th>Message</th><th>Date</th></tr></thead>
+        <tbody>
+        {% for note in recent_notifications %}
+            <tr><td>{{ note.message }}</td><td>{{ note.created_at.strftime('%b %d, %Y %I:%M %p') }}</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No notifications yet.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+<canvas
+    id="visitorChart"
+    data-labels='{{ chart_labels|tojson }}'
+    data-data='{{ chart_data|tojson }}'>
+</canvas>
+
+{% block extra_scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const canvas = document.getElementById("visitorChart");
+    if (!canvas) return;
+
+    const chartLabels = JSON.parse(canvas.dataset.labels);
+    const chartData = JSON.parse(canvas.dataset.data);
+
+    new Chart(canvas, {
+        type: "line",
+        data: {
+            labels: chartLabels,
+            datasets: [{
+                label: "Daily Visits",
+                data: chartData,
+                borderColor: "#B9873F",
+                backgroundColor: "rgba(185,135,63,0.15)",
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+});
+</script>
+{% endblock %}

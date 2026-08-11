@@ -1,0 +1,43 @@
+{% extends "admin/_layout.html" %}
+{% set active_page = "rooms" %}
+{% block title %}Room Lists - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>All Room Listings</h2></div>
+
+<div class="panel">
+    {% if rooms %}
+    <table>
+        <thead><tr><th>Title</th><th>Owner</th><th>Location</th><th>Price</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for room in rooms %}
+            <tr>
+                <td>{{ room.title }}</td>
+                <td>{{ room.owner.full_name }}</td>
+                <td>{{ room.location }}</td>
+                <td>Rs {{ "%.0f"|format(room.price) }}</td>
+                <td><span class="badge-status badge-{{ room.status }}">{{ room.status }}</span></td>
+                <td class="table-actions">
+                    {% if room.status != "approved" %}
+                    <form method="post" action="{{ url_for('admin.approve_room', room_id=room.id) }}">
+                        <button type="submit" class="btn btn-sm btn-teal">Approve</button>
+                    </form>
+                    {% endif %}
+                    {% if room.status != "rejected" %}
+                    <form method="post" action="{{ url_for('admin.reject_room', room_id=room.id) }}">
+                        <button type="submit" class="btn btn-sm btn-outline">Reject</button>
+                    </form>
+                    {% endif %}
+                    <form method="post" action="{{ url_for('admin.delete_room', room_id=room.id) }}" onsubmit="return confirm('Delete this room listing?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No rooms have been listed yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

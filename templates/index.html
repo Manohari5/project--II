@@ -1,0 +1,170 @@
+{% extends "base.html" %} {% block title %}NestIn - Find Your Next Room{%
+endblock %} {% block content %}
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">Room Rental, Simplified</p>
+    <h1>A room that feels like yours, found in minutes.</h1>
+    <p class="lead">
+      Browse verified listings from real room owners near you. No login required
+      to look around - book the moment you find the one.
+    </p>
+
+    <div class="search-tag">
+      <form
+        action="{{ url_for('public.home') }}"
+        method="get"
+        class="search-form"
+      >
+        <input
+          type="text"
+          name="q"
+          placeholder="Search by title, e.g. 'Single Room'"
+          value="{{ query }}"
+        />
+        <input
+          type="text"
+          name="location"
+          placeholder="Location, e.g. Kathmandu"
+          value="{{ location }}"
+        />
+        <input
+          type="number"
+          name="min_price"
+          placeholder="Min price"
+          value="{{ min_price if min_price is not none else '' }}"
+        />
+        <input
+          type="number"
+          name="max_price"
+          placeholder="Max price"
+          value="{{ max_price if max_price is not none else '' }}"
+        />
+        <button type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="page-section" id="featured">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Available Now</p>
+      <h2>
+        {% if query or location or min_price or max_price %}Search Results{%
+        else %}Featured Rooms{% endif %}
+      </h2>
+    </div>
+  </div>
+
+  <p class="results-count container">{{ rooms|length }} room(s) found</p>
+
+  {% if rooms %}
+  <div class="room-grid">
+    {% for room in rooms %}
+    <article class="room-card">
+      {% if room.images %}
+      <img
+        src="{{ url_for('public.room_image', filename=room.cover_image) }}"
+        alt="Photo of {{ room.title }}"
+        onerror="this.src = '/static/images/placeholder_room.svg'"
+      />
+      {% else %}
+      <img
+        src="{{ url_for('static', filename='images/placeholder_room.svg') }}"
+        alt="Photo of {{ room.title }}"
+      />
+      {% endif %}
+      <div class="room-body">
+        <h3>{{ room.title }}</h3>
+        <p class="room-location">📍 {{ room.location }}</p>
+        <div class="view-btn">
+          <a
+            href="{{ url_for('public.room_detail', room_id=room.id) }}"
+            class="btn btn-primary btn-block"
+            >View & Book</a
+          >
+        </div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <h3>No rooms match your search</h3>
+    <p>Try a broader keyword or clear your filters.</p>
+    <a href="{{ url_for('public.home') }}" class="btn btn-outline"
+      >Clear search</a
+    >
+  </div>
+  {% endif %}
+</section>
+
+<section class="page-section bg-ink" id="about">
+  <div class="about-grid">
+    <div>
+      <p class="eyebrow" style="color: #b9873f">About NestIn</p>
+      <h2>Built for room seekers and room owners alike</h2>
+      <p style="color: #c9c2af">
+        Room owners list their available rooms with photos and details. Every
+        listing is reviewed by our team before it goes live, so seekers can
+        browse with confidence - no account needed.
+      </p>
+      <div class="stat-row">
+        <div>
+          <strong>{{ featured_rooms|length }}</strong
+          ><span>Featured Rooms</span>
+        </div>
+        <div><strong>100%</strong><span>Verified Listings</span></div>
+        <div><strong>0</strong><span>Login Required</span></div>
+      </div>
+    </div>
+    <aside>
+      <img
+        src="{{ url_for('static', filename='images/placeholder_about.svg') }}"
+        alt="Illustration of a cosy rented room"
+      />
+    </aside>
+  </div>
+</section>
+
+<section class="page-section">
+  <div class="contact-grid">
+    <div>
+      <p class="eyebrow">Get In Touch</p>
+      <h2>Own a room to rent out?</h2>
+      <p>
+        Register as a Room Owner and list your space in minutes. Once approved
+        by our admin team, it'll be visible to everyone browsing NestIn.
+      </p>
+      <a href="{{ url_for('auth.register') }}" class="btn btn-brass"
+        >List Your Room</a
+      >
+    </div>
+    <form class="panel" method="post" action="#" onsubmit="return false;">
+      <h3>Send us a message</h3>
+      <div class="form-group">
+        <label for="contact_name">Name</label>
+        <input
+          type="text"
+          id="contact_name"
+          name="name"
+          placeholder="Your name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="contact_message">Message</label>
+        <textarea
+          id="contact_message"
+          name="message"
+          placeholder="How can we help?"
+        ></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">
+        Send Message
+      </button>
+    </form>
+  </div>
+</section>
+
+{% endblock %}

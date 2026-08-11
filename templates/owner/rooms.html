@@ -1,0 +1,37 @@
+{% extends "owner/_layout.html" %}
+{% set active_page = "rooms" %}
+{% block title %}My Rooms - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header">
+    <h2>My Rooms</h2>
+    <a href="{{ url_for('owner.add_room') }}" class="btn btn-brass">+ Add Room</a>
+</div>
+
+<div class="panel">
+    {% if rooms %}
+    <table>
+        <thead><tr><th>Title</th><th>Location</th><th>Price</th><th>Available</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for room in rooms %}
+            <tr>
+                <td>{{ room.title }}</td>
+                <td>{{ room.location }}</td>
+                <td>Rs {{ "%.0f"|format(room.price) }}</td>
+                <td>{{ "Yes" if room.is_available else "No" }}</td>
+                <td><span class="badge-status badge-{{ room.status }}">{{ room.status }}</span></td>
+                <td class="table-actions">
+                    <a href="{{ url_for('owner.edit_room', room_id=room.id) }}" class="btn btn-sm btn-outline">Edit</a>
+                    <form method="post" action="{{ url_for('owner.delete_room', room_id=room.id) }}" onsubmit="return confirm('Delete this room listing?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>You haven't listed any rooms yet. <a href="{{ url_for('owner.add_room') }}">Add your first room</a>.</p>
+    {% endif %}
+</div>
+{% endblock %}

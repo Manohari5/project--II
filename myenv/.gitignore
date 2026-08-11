@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+venv/
+database/*.db
+uploads/profile_pics/*
+!uploads/profile_pics/default.svg
+uploads/rooms/*
+.env

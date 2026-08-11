@@ -1,0 +1,26 @@
+{% extends "admin/_layout.html" %}
+{% set active_page = "notifications" %}
+{% block title %}Notifications - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>Notifications</h2></div>
+
+<div class="panel">
+    {% if notifications %}
+    <table>
+        <thead><tr><th>Message</th><th>Type</th><th>Date</th></tr></thead>
+        <tbody>
+        {% for note in notifications %}
+            <tr>
+                <td>{{ note.message }}</td>
+                <td>{{ note.category.replace('_', ' ')|title }}</td>
+                <td>{{ note.created_at.strftime('%b %d, %Y %I:%M %p') }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No notifications yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

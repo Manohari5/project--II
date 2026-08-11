@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Login - NestIn{% endblock %}
+
+{% block content %}
+<div class="form-wrap">
+    <h2>Welcome back</h2>
+    <p class="form-subtitle">Log in to manage your rooms and bookings.</p>
+
+    <form method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required autofocus>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Log In</button>
+    </form>
+
+    <p class="form-footer-link">Don't have an account? <a href="{{ url_for('auth.register') }}">Register as a Room Owner</a></p>
+</div>
+{% endblock %}

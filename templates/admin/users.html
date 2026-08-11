@@ -1,0 +1,29 @@
+{% extends "admin/_layout.html" %}
+{% set active_page = "users" %}
+{% block title %}Registered Users - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>Registered Users</h2></div>
+
+<p style="color:#6B7280; margin-top:-14px;">Room browsing and booking don't require an account, so this list shows all registered Room Owner accounts on the platform.</p>
+
+<div class="panel">
+    {% if users %}
+    <table>
+        <thead><tr><th>Name</th><th>Location</th><th>Joined</th><th>Status</th></tr></thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.full_name }}</td>
+                <td>{{ user.location or "-" }}</td>
+                <td>{{ user.created_at.strftime('%b %d, %Y') }}</td>
+                <td><span class="badge-status badge-{{ user.status }}">{{ user.status }}</span></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No registered users yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

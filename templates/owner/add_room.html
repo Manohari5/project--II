@@ -1,0 +1,37 @@
+{% extends "owner/_layout.html" %}
+{% set active_page = "add_room" %}
+{% block title %}Add Room - NestIn{% endblock %}
+
+{% block dash_content %}
+<div class="dash-header"><h2>Add a New Room</h2></div>
+
+<div class="panel" style="max-width:640px;">
+    <p style="color:#6B7280; font-size:0.9rem; margin-top:0;">Your listing will be hidden from the public until the admin approves it.</p>
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Room Title</label>
+            <input type="text" id="title" name="title" placeholder="e.g. Single Room near Ratna Park" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="price">Monthly Price (Rs)</label>
+                <input type="number" id="price" name="price" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" id="location" name="location" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="roomImagesInput">Room Photos</label>
+            <input type="file" id="roomImagesInput" name="images" accept="image/*" multiple>
+            <div id="roomImagesPreview" style="margin-top:10px;"></div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit for Approval</button>
+    </form>
+</div>
+{% endblock %}
